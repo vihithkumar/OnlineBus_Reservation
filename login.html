@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bus Reservation System</title>
+    <style>
+        body {
+            background-image: url('https://wallpapercave.com/wp/wp9764093.jpg');
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #20c9dc;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        main {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, input, button {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #1cd622cf;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Login to Bus Reservation System</h1>
+    </header>
+    <main>
+        <form id="login-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="button" onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="redirectToRegister()">Register</a></p>
+        </form>
+    </main>
+    <script>
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                const user = {
+                    email: email,
+                    from: '',
+                    to: ''
+                };
+                sessionStorage.setItem('user', JSON.stringify(user));
+                alert(`Logged in as ${email}`);
+                window.location.href = 'index.html';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function redirectToRegister() {
+            alert('Redirect to registration page (not implemented).');
+            // window.location.href = 'register.html'; // Uncomment when the registration page is available
+        }
+    </script>
+</body>
+</html>
