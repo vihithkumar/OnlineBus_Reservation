@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Reservation System</title>
+
+    <style>
+        body {
+            background-image: url('https://thumbs.dreamstime.com/b/travel-bus-miniature-yellow-van-nature-landscape-scene-98035283.jpg');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #522cde;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label, input, button {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #c81111;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #results, #cancel-results {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to VNS Travels</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('search')">Search Buses</a></li>
+                <li><a href="#" onclick="showSection('booked')">Booked Tickets</a></li>
+                <li><a href="#" onclick="showSection('cancel')">Cancel Ticket</a></li>
+                <li><a href="#" onclick="showSection('available')">Available Buses</a></li>
+                <li><a href="login.html">Login</a></li> <!-- Added Login button -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="search" class="active">
+            <h2>Search Buses</h2>
+            <form id="reservation-form">
+                <label for="from">From:</label>
+                <input type="text" id="from" name="from" required>
+                
+                <label for="to">To:</label>
+                <input type="text" id="to" name="to" required>
+                
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+                
+                <button type="button" onclick="searchBuses()">Search Buses</button>
+            </form>
+            <div id="results"></div>
+        </section>
+        
+        <section id="booked">
+            <h2>Booked Tickets</h2>
+            <p>No booked tickets available.</p>
+        </section>
+        
+        <section id="cancel">
+            <h2>Cancel Ticket</h2>
+            <form id="cancel-form">
+                <label for="ticket-number">Ticket Number:</label>
+                <input type="text" id="ticket-number" name="ticket-number" required>
+                
+                <button type="button" onclick="cancelTicket()">Cancel Ticket</button>
+            </form>
+            <div id="cancel-results"></div>
+        </section>
+        
+        <section id="available">
+            <h2>Available Buses</h2>
+            <p>No available buses at the moment.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Bus Reservation System</p>
+    </footer>
+   <!-- Rest of the code remains the same -->
+<script>
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('main section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function searchBuses() {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        if (!user) {
+            alert('Please login to book a ticket.');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const from = document.getElementById('from').value;
+        const to = document.getElementById('to').value;
+        const date = document.getElementById('date').value;
+
+        if (from && to && date) {
+            document.getElementById('results').innerHTML = `
+                <h2>Available Buses</h2>
+                <p>From: ${from}</p>
+                <p>To: ${to}</p>
+                <p>Date: ${date}</p>
+                <p>No buses available for this route and date.</p>
+            `;
+        } else {
+            document.getElementById('results').innerHTML = `<p>Please fill in all fields.</p>`;
+        }
+    }
+
+    function cancelTicket() {
+        const ticketNumber = document.getElementById('ticket-number').value;
+
+        if (ticketNumber) {
+            document.getElementById('cancel-results').innerHTML = `
+                <h2>Cancel Ticket</h2>
+                <p>Ticket Number: ${ticketNumber}</p>
+                <p>Your ticket has been canceled.</p>
+            `;
+        } else {
+            document.getElementById('cancel-results').innerHTML = `<p>Please enter a ticket number.</p>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        if (user) {
+            document.getElementById('from').value = user.from || '';
+            document.getElementById('to').value = user.to || '';
+        }
+    });
+</script>
+</body>
+</html>
